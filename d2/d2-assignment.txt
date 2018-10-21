@@ -1,0 +1,52 @@
+SciPy Lectures exercises
+
+Exercise 1: [1][2]
+
+Compute the decimals of Pi using the Wallis formula:
+
+\pi = 2 \prod_{i=1}^{\infty} \frac{4i^2}{4i^2 - 1}
+
+
+Exercise 2: Fibonacci sequence [3]
+
+Write a function that displays the n first terms of the Fibonacci sequence, defined by:
+
+\left\{
+    \begin{array}{ll}
+        U_{0} = 0 \\
+        U_{1} = 1 \\
+        U_{n+2} = U_{n+1} + U_{n}
+    \end{array}
+\right.
+
+Exercise 3: Quicksort [3]
+
+Implement the quicksort algorithm, as defined by wikipedia [4]
+
+function quicksort(array)
+    var list less, greater
+    if length(array) < 2
+        return array
+    select and remove a pivot value pivot from array
+    for each x in array
+        if x < pivot + 1 then append x to less
+        else append x to greater
+    return concatenate(quicksort(less), pivot, quicksort(greater))
+
+
+References
+
+[1] Scipy Lectures - 1.2.3. Control Flow
+http://www.scipy-lectures.org/intro/language/control_flow.html
+
+[2] The Wallis Product
+https://crypto.stanford.edu/pbc/notes/pi/wallis.html
+https://en.wikipedia.org/wiki/Wallis_product
+http://mathworld.wolfram.com/WallisFormula.html
+https://www.intmath.com/blog/mathematics/wallis-pi-and-quantum-theory-10494
+
+[3] Scipy Lectures - 1.2.4. Defining functions
+http://www.scipy-lectures.org/intro/language/functions.html
+
+[4] Quicksort - Wikipedia
+https://en.wikipedia.org/wiki/Quicksort
