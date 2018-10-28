@@ -1,0 +1,10 @@
+OOP Formas Geometricas
+
+Realizar un módulo en Python aplicando programación orientada a objetos referido a formas Geométricas. En este caso se creará al menos una clase por cada forma geométrica básica: Círculo, Rectángulo y Triángulo. Todas ellas deberán de heredar de una clase "Figura", que definirá los métodos básicos a implementar por cada una de las formas formas geométricas. 
+
+También deberéis experimentar con la sobrecarga de operadores en Python. Sobrecargar __repr__ y __str__ (ver el link), para que muestre la información de la forma geométrica.
+
+Con respecto a los operadores aritméticos (+, -, *, /, **, /), al operar 2 figuras se operará con los parámetros de la forma geométrica. Esto significa que si sumamos 2 círculos, se creará un nuevo círculo son su radio sumado. Si suma un objeto de tipo numérico, entonces se le aplicará a cada uno de los atributos de la figura.
+
+Con respecto a los operadores lógicos se usará el área de la forma para comparar las figuras. Esto permitirá comparar distintos tipos de figura, y por tanto podrá implementarse los comparadores en la clase "Figura".
+
