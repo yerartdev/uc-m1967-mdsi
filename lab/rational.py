@@ -7,21 +7,21 @@ This is a Master of Data Science M1967 class exercise. This module implements a 
    https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html
 
 Example:
-    This module is intented to be used as an import only in a program or 
-    interactive session::
+   This module is intented to be used as an import only in a program or 
+   interactive session::
 
-        >> import rational as r
-        >> a = r.Rational(3,5)
-        >> b = r.Rational(7)
-        >> print(a+b)
-        (38/5)
+      >> import rational as r
+      >> a = r.Rational(3,5)
+      >> b = r.Rational(7)
+      >> print(a+b)
+      (38/5)
 
 Attributes:
-    No module level variables.
+   No module level variables.
 
 Todo:
-    * Implement Rational operations (op): +,-,*,/,**
-    * Implement Integer op Rational and Rational op Integer
+   * Implement Rational operations (op): +,-,*,/,**
+   * Implement Integer op Rational and Rational op Integer
 
 .. _Google Python Style Guide:
    http://google.github.io/styleguide/pyguide.html
@@ -29,39 +29,40 @@ Todo:
 """
 
 class Rational:
-  """The summary line for a class docstring should fit on one line.
+  """A rational number object implementation with common binary operators.
 
-  If the class has public attributes, they may be documented here
-  in an ``Attributes`` section and follow the same formatting as a
-  function's ``Args`` section. Alternatively, attributes may be documented
-  inline with the attribute's declaration (see __init__ method below).
+  In mathematics, a rational number is any number that can be expressed as 
+  the quotient or fraction p/q of two integers, a numerator p and a non-zero 
+  denominator q. As defined in::
 
-  Properties created with the ``@property`` decorator should be documented
-  in the property's getter method.
+  .. _Rational number in Wikipedia:
+     https://en.wikipedia.org/wiki/Rational_number
 
   Attributes:
-      attr1 (str): Description of `attr1`.
-      attr2 (:obj:`int`, optional): Description of `attr2`.
+    numerator   (:obj:`int`, optional): integer numerator of fraction.
+      Defaults to None.
+    denominator (:obj:`int`, optional): integer denominator of fraction.
+      Defaults to None.
 
   """
 
   def __init__(self,num=None,den=None):
-    """Example of docstring on the __init__ method.
+    """Initialisation of the rational or fraction.
 
-        The __init__ method may be documented in either the class level
-        docstring, or as a docstring on the __init__ method itself.
+    A rational o fraction may be created as a Not a Number, denoted by N/A.
+    If no numerator is provided or if denominator is zero then rational is 
+    N/A. Providing a non integer numerator or denominator is interpreted as
+    not providing the attribute.
 
-        Either form is acceptable, but the two should not be mixed. Choose one
-        convention to document the __init__ method and be consistent with it.
+    If no denominator is provided then it is assumed to be 1. Since
+    the denominator may be equal to 1, every integer is a rational number. 
 
-        Note:
-            Do not include the `self` parameter in the ``Args`` section.
+    Note:
+      Do not include the `self` parameter in the ``Args`` section.
 
-        Args:
-            param1 (str): Description of `param1`.
-            param2 (:obj:`int`, optional): Description of `param2`. Multiple
-                lines are supported.
-            param3 (:obj:`list` of :obj:`str`): Description of `param3`.
+    Args:
+      num (:obj:`int`, optional): integer numerator.
+      den (:obj:`int`, optional): integer denominator.
 
     """
     if isinstance(num,int):
@@ -82,17 +83,9 @@ class Rational:
       self.denominator = None
 
   def __str__(self):
-    """By default special members with docstrings are not included.
+    """String representation of a rational (fraction) number.
 
-        Special members are any methods or attributes that start with and
-        end with a double underscore. Any special member with a docstring
-        will be included in the output, if
-        ``napoleon_include_special_with_doc`` is set to True.
-
-        This behavior can be enabled by changing the following setting in
-        Sphinx's conf.py::
-
-            napoleon_include_special_with_doc = True
+    The fraction is represented as ``numerator/denominator`` or ``N/A``.
 
     """
     if self.numerator == None or self.denominator == 0:
