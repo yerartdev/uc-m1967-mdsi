@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-"""Módulo para entregable UC M1967 OOPFormasGeometricas. 
+"""Módulo para entregable UC M1967 OOPFormasGeometricas.
 
-Entregable UC Master of Data Science M1967. Este módulo implementa una 
+Entregable UC Master of Data Science M1967. Este módulo implementa una
 jerarquía de clases basada en el conceptos: figura geométrica, círculo,
 rectángulo y triángulo. Sigue las instrucciones indicadas por el equipo
 docente.
@@ -13,7 +13,7 @@ Entrega:
 
 Instrucciones:
 
-Realizar un módulo en Python aplicando programación orientada a objetos referido a formas Geométricas. En este caso se creará al menos una clase por cada forma geométrica básica: Círculo, Rectángulo y Triángulo. Todas ellas deberán de heredar de una clase "Figura", que definirá los métodos básicos a implementar por cada una de las formas formas geométricas. 
+Realizar un módulo en Python aplicando programación orientada a objetos referido a formas Geométricas. En este caso se creará al menos una clase por cada forma geométrica básica: Círculo, Rectángulo y Triángulo. Todas ellas deberán de heredar de una clase "Figura", que definirá los métodos básicos a implementar por cada una de las formas formas geométricas.
 
 También deberéis experimentar con la sobrecarga de operadores en Python. Sobrecargar __repr__ y __str__ (ver el link), para que muestre la información de la forma geométrica.
 
@@ -40,7 +40,7 @@ Attributes:
    No hay variables de módulo.
 
 Todo:
-   * Implementar clase Figura 
+   * Implementar clase Figura
    * Implemantar clase Círculo
    * Implementar clase Rectángulo
    * Implementar clase Triángulo
@@ -53,12 +53,12 @@ Todo:
 
 class Figura(object):
   """Clase que representa una figura geométrica.
-  
+
   Attributes:
     dimension (int): dimensión de la figura geométrica.
-    magnitud (tuple, optional): secuencia de números que representa la ``longitud`` 
+    magnitud (tupla, opcional): secuencia de números que representa la ``longitud``
       en cada dimensión.
-  
+
   """
 
   def __init__(self, mag=None):
@@ -68,9 +68,12 @@ class Figura(object):
     else:
       self.magnitud = tuple()
       self.dimension = 0
-        
+
   def __str__(self):
-    pass
+    if self.magnitud:
+      return str('Figura') + str(list(self.magnitud))
+    else:
+      return str('Figura(NaF)') # NaF = Not a Figure
 
-
-    
+  def dim(self):
+    return self.dimension
