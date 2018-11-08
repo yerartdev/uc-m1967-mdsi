@@ -1,0 +1,6 @@
+Ejercicios Seguimiento Numpy I
+
+Crea un Jupyter Notebook con cada ejercicio en su propia sección.
+
+    Ejercicio 1. Considera un array de 100 elementos del 1 al 5 e igualmente espaciados. Construye un nuevo array con 3 ceros consecutivos intercalados entre cada uno de los valores del primer array.
+    Ejercicio 2. Crea un array de 20 numeros generados aleatoriamente. Encuentra el valor mas cercano (a un escalar dado) en este array.
