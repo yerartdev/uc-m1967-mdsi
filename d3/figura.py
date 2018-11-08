@@ -50,3 +50,27 @@ Todo:
 
 """
 
+
+class Figura(object):
+  """Clase que representa una figura geométrica.
+  
+  Attributes:
+    dimension (int): dimensión de la figura geométrica.
+    magnitud (tuple, optional): secuencia de números que representa la ``longitud`` 
+      en cada dimensión.
+  
+  """
+
+  def __init__(self, mag=None):
+    if mag:
+      self.magnitud = tuple(mag)
+      self.dimension = len(mag)
+    else:
+      self.magnitud = tuple()
+      self.dimension = 0
+        
+  def __str__(self):
+    pass
+
+
+    
