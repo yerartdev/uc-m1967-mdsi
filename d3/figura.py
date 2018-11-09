@@ -40,7 +40,8 @@ Attributes:
    No hay variables de módulo.
 
 Todo:
-   * Implementar clase Figura
+   * Documentar __str__, num_lados, perimetro, area
+   * Implementar Pruebas unitarias de clase Figura
    * Implemantar clase Círculo
    * Implementar clase Rectángulo
    * Implementar clase Triángulo
@@ -51,23 +52,36 @@ Todo:
 """
 
 
+pi = 3.14159265359
+"""float: relación entre la longitud de una circunferencia y su diámetro en geometría euclidiana.
+
+Para más información::
+
+.. _Wikipedia: Número π:
+   https://es.wikipedia.org/wiki/N%C3%BAmero_%CF%80
+
+"""
+
+
 class Figura(object):
   """Clase que representa una figura geométrica.
 
   Attributes:
-    dimension (int): dimensión de la figura geométrica.
-    magnitud (tupla, opcional): secuencia de números que representa la ``longitud``
-      en cada dimensión.
+    lados (int): número de lados de la figura geométrica.
+    magnitud (:obj:`tuple`, opcional): secuencia de números enteros positivos inmutable
+      que representa la ``longitud`` de cada lado.
 
   """
 
   def __init__(self, mag=None):
-    if mag:
+    #::GMG::Solamente una secuencia de números enteros positivos válida
+    if (mag and isinstance(mag, (list, tuple)) and \
+        all(x >= 0 for x in mag)):
       self.magnitud = tuple(mag)
-      self.dimension = len(mag)
+      self.lados = len(mag)
     else:
       self.magnitud = tuple()
-      self.dimension = 0
+      self.lados = 0
 
   def __str__(self):
     if self.magnitud:
@@ -75,5 +89,14 @@ class Figura(object):
     else:
       return str('Figura(NaF)') # NaF = Not a Figure
 
-  def dim(self):
-    return self.dimension
+  def num_lados(self):
+    return self.lados
+
+  def perimetro(self):
+    s = 0
+    for i in self.magnitud:
+      s+=i
+    return s
+
+  def area(self):
+    pass
