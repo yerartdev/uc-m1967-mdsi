@@ -40,9 +40,8 @@ Attributes:
     No hay variables de módulo.
 
 Todo:
-    * Documentar __str__, num_lados, perimetro, area
     * Implementar Pruebas unitarias de clase Figura
-    * Implemantar clase Circulo
+    * Implementar clase Circulo
     * Implementar clase Rectangulo
     * Implementar clase Triangulo
     * Implementar Pruebas unitarias de clases: Circulo, Rectangulo, Triangulo
@@ -95,6 +94,12 @@ class Figura(object):
             return str(self._nombre) + str(list(self.magnitud))
         else:
             return str(self._nombre) +  str('(NaF)') #::GMG::NaF = Not a Figure
+        
+    def __repr__(self):
+        if self.magnitud:
+            return str(Figura(self.magnitud))
+        else:
+            return str(Figura())
 
     def num_lados(self):
         return self._lados
@@ -107,6 +112,35 @@ class Figura(object):
 
     def area(self):
         pass
+
+    #::GMG::Las funciones aritméticas se pueden implementar sabiendo self.magnitud
+    #+ 	object.__add__(self, other)
+    #https://www.codecademy.com/en/forum_questions/5479afac7c82cafda30024c2
+    #https://stackoverflow.com/questions/16548584/adding-two-tuples-elementwise
+    def __add__(self, other):
+        return Figura([sum(x) for x in zip(self.magnitud,other.magnitud)])
+
+    #- 	object.__sub__(self, other)
+    #https://stackoverflow.com/questions/17418108/elegant-way-to-perform-tuple-arithmetic
+    def __sub__(self, other):
+        return Figura(tuple([x-y for x, y in zip(self.magnitud, other.magnitud)]))
+
+    #* 	object.__mul__(self, other)
+    def __mul__(self,other):
+        return Figura(tuple([x*y for x, y in zip(self.magnitud, other.magnitud)]))
+
+    #// object.__floordiv__(self, other)
+    def __floordiv__(self, other):
+        return Figura(tuple([x//y for x, y in zip(self.magnitud, other.magnitud)]))
+
+    #/ 	object.__truediv__(self, other)
+    #::GMG::Notimplemented
+    #       Considero que no tiene sentido porque trabajo con `longitudes`, es decir,
+    #       números enteros positivos
+
+    #** .. pow() object.__rpow__(self, other)
+    def __pow__(self,other):
+        return Figura(tuple([x**y for x, y in zip(self.magnitud, other.magnitud)]))
 
 
 class Circulo(Figura):
@@ -125,18 +159,18 @@ class Triangulo(Figura):
 
 """
 
-def test_rectangulo():
-    a = Rectangulo(3,5)
+#def test_rectangulo():
+#    a = Rectangulo(3,5)
     #b = Rectangulo(2,7)
 
-    area_real = 15
-    perimetro_real = 8
-    area = a.area()
-    perimetro_1 = a.perimetro()
-    perimetro_2 = Figura.primetro(a)
-    assert area == area_real, \
-        '::GMG::test_rectangulo()::a.area()::Error, area esperada=%s, calculada=%s ' \
-        % (area_real,area)
+#    area_real = 15
+#    perimetro_real = 8
+#    area = a.area()
+#    perimetro_1 = a.perimetro()
+#    perimetro_2 = Figura.primetro(a)
+#    assert area == area_real, \
+#        '::GMG::test_rectangulo()::a.area()::Error, area esperada=%s, calculada=%s ' \
+#        % (area_real,area)
 
 #import unittest
 
