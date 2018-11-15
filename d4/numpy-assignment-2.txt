@@ -1,3 +1,5 @@
+Ejercicios Seguimiento Numpy II
+
 Create a Jupyter Notebook with each exercise in its own section.
 
 EJercicio 1. Form the 2-D array (without typing it in explicitly):
