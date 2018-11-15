@@ -1,0 +1,16 @@
+Create a Jupyter Notebook with each exercise in its own section.
+
+EJercicio 1. Form the 2-D array (without typing it in explicitly):
+
+[[1,  6, 11],
+ [2,  7, 12],
+ [3,  8, 13],
+ [4,  9, 14],
+ [5, 10, 15]]
+
+and generate a new array containing its 2nd and 4th rows.
+
+Ejercicio 2. Generate a 10 x 3 array of random numbers (in range [0,1]). For each row, pick the number closest to 0.5.
+     
+   Hints: Use abs and argsort to find the column j closest for each row.
+          Use fancy indexing to extract the numbers.
