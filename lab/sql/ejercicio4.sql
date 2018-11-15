@@ -1,0 +1,12 @@
+select * from Articulos;
+select * from Proveedores order by nombrpro asc, cpostpro desc;
+select numped,fechaped,ivaped from Pedidos;
+select *, (unilin*preunlin) precio from Lineas where numped = 2 order by precio asc;
+select * from Lineas where (numped = 2 and desculin = 0);
+select numped,fechaped,fentrped from Pedidos where (fechaped <> fentrped);
+select * from Articulos where fechabaja is null;
+select * from Articulos where fechabaja is not null;
+select * from Articulos where fechabaja between '2018-01-01' and '2018-06-30';
+select * from Articulos where fechabaja between '2018-01-01' and '2018-06-30' and stockart > 0;;
+select codipro, nombpro from Proveedores where nombrpro like ('Z%') or nompbrpro like ('B%');
+select codipro, nombpro from Proveedores where nombrpro not like ('Z%');
