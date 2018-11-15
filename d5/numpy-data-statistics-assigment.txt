@@ -1,0 +1,14 @@
+NumPy: Data statistics
+
+The data in populations.txt describes the populations of hares and lynxes (and carrots) in northern Canada during 20 years.
+
+Computes and print, based on the data in populations.txt (use loadtxt to read the file)...
+
+    1. The mean and std of the populations of each species for the years in the period.
+    2. Which year each species had the largest population.
+    3. Which species has the largest population for each year. (Hint: argsort & fancy indexing of np.array(['H', 'L', 'C']))
+    4. Which years any of the populations is above 50000. (Hint: comparisons and np.any)
+    5. The top 2 years for each species when they had the lowest populations. (Hint: argsort, fancy indexing)
+    6. Compare (plot) the change in hare population (see help(np.gradient)) and the number of lynxes. Check correlation (see help(np.corrcoef)).
+
+... all without for-loops.
