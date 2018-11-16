@@ -25,7 +25,7 @@ CREATE TABLE Articulos (
 	preunart	DECIMAL(9,2)	 NOT NULL,
 	stockart	INTEGER  NOT NULL check (stockart >=0),
 	stockmin	INTEGER  NOT NULL check (stockmin >=0),
-    fecbaja     DATE);
+	fechabaja	DATE);
 
 CREATE TABLE Pedidos (
 	numped 		INTEGER  	 NOT NULL   CONSTRAINT id_ped PRIMARY KEY,
