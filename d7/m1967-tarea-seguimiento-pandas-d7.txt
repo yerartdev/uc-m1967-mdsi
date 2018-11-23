@@ -1,0 +1,13 @@
+Wed Nov 21 08:05:31 2018 
+
+Tarea de seguimiento Pandas
+
+Ejercicios de seguimiento: PANDAS
+
+Crea un notebook de jupyter reproduciendo los ejemplos y comentarios del tutorial de 10 minutos PANDAS (1). El nombre del fichero para este notebook será TutorialPandas.ipynb. Subir también la versión HTML del notebok
+
+Referencia
+
+(1) Tutorial 10min
+
+http://pandas.pydata.org/pandas-docs/stable/10min.html
