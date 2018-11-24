@@ -1,197 +1,216 @@
-# -*- coding: utf-8 -*-
-"""Módulo para entregable UC M1967 OOPFormasGeometricas.
-
-Entregable UC Master of Data Science M1967. Este módulo implementa una
-jerarquía de clases basada en el conceptos: figura geométrica, círculo,
-rectángulo y triángulo. Sigue las instrucciones indicadas por el equipo
-docente.
-
-Entrega:
-
-.. _.py con la implementación de las clase (este módulo)
-.. _.ipynb (y .html) con ejemplos de uso y comentarios.
-
-Instrucciones:
-
-Realizar un módulo en Python aplicando programación orientada a objetos referido a formas Geométricas. En este caso se creará al menos una clase por cada forma geométrica básica: Círculo, Rectángulo y Triángulo. Todas ellas deberán de heredar de una clase "Figura", que definirá los métodos básicos a implementar por cada una de las formas formas geométricas.
-
-También deberéis experimentar con la sobrecarga de operadores en Python. Sobrecargar __repr__ y __str__ (ver el link), para que muestre la información de la forma geométrica.
-
-Con respecto a los operadores aritméticos (+, -, *, /, **), al operar 2 figuras se operará con los parámetros de la forma geométrica. Esto significa que si sumamos 2 círculos, se creará un nuevo círculo son su radio sumado. Si suma un objeto de tipo numérico, entonces se le aplicará a cada uno de los atributos de la figura.
-
-Con respecto a los operadores lógicos se usará el área de la forma para comparar las figuras. Esto permitirá comparar distintos tipos de figura, y por tanto podrá implementarse los comparadores en la clase "Figura".
-
-Ejemplo:
-    Sesión interactiva ipython::
-
-        >> import figura as f
-        >> a = f.Rectangulo(3,5)
-        >> b = f.Rectangulo(2,7)
-        >> c = 3
-        >> print('Compara Rectángulos',a, 'y',b,': a > b -> ',a > b)
-        Compara rectángulos R(3,5) y R(2,7) : a > b -> True
-        True
-        >> print('Suma Rectángulos',a, 'y',b,': a + b -> ',a + b)
-        Suma rectángulos R(3,5) y R(2,7) : a + b -> R(5,12)
-        >> print('Suma entero y rectángulo',a, 'y',c,': a + c -> ',a + c)
-        Suma entero y rectángulo R(3,5) y 3 : a + c -> R(6,8)
-
-Attributes:
-    No hay variables de módulo.
-
-Todo:
-    * Implementar Pruebas unitarias de clase Figura
-    * Implementar clase Circulo
-    * Implementar clase Rectangulo
-    * Implementar clase Triangulo
-    * Implementar Pruebas unitarias de clases: Circulo, Rectangulo, Triangulo
-    * Implementar operaciones lógicas entre figuras (>, <, >=, <=, ==, !=)
-    * Implementar Pruebas unitarias de operaciones lógicas
-    * Implementar operaciones aritméticas entre figuras (+,-,*,/,**)
-    * Implementar Pruebas unitarias de operaciones aritméticas
-    * Implement operaciones aritméticas entre números y figuras
-    * Implementar Pruebas unitarias de operaciones entre números y figuras
-    * Implementar Pruebas unitarias en Notebook Python para entregable
-
-"""
-
-
 pi = 3.14159265359
-"""float: relación entre la longitud de una circunferencia y su diámetro en geometría euclidiana.
-
-Para más información::
-
-.. _Wikipedia: Número π:
-    https://es.wikipedia.org/wiki/N%C3%BAmero_%CF%80
-
-"""
-
 
 class Figura(object):
-    """Clase que representa una figura geométrica.
-
-    Attributes:
-        _lados (int): número de lados de la figura geométrica.
-        magnitud (:obj:`tuple`, opcional): secuencia de números enteros positivos inmutable
-        que representa la ``longitud`` de cada lado.
-
-    """
-    
-    _nombre = 'Figura'
 
     def __init__(self, mag=None):
         #::GMG::Solamente una secuencia de números enteros positivos válida
         if (mag and isinstance(mag, (list, tuple)) and \
-            all(x >= 0 for x in mag)):
-            self.magnitud = tuple(mag)
-            self._lados = len(mag)
+            all((isinstance(x, int) and x >= 0) for x in mag)):
+            self._magnitud = tuple(mag)
         else:
-            self.magnitud = tuple()
-            self._lados = 0
+            self._magnitud = tuple()
 
-    def __str__(self):
-        if self.magnitud:
-            return str(self._nombre) + str(list(self.magnitud))
-        else:
-            return str(self._nombre) +  str('(NaF)') #::GMG::NaF = Not a Figure
-        
     def __repr__(self):
-        if self.magnitud:
-            return str(Figura(self.magnitud))
+        if self._magnitud:
+            return str(self.__class__.__name__) + \
+		str(list(self._magnitud))
+            #return '{}{}'.format(self.__class__.__name__, self.magnitud)
         else:
-            return str(Figura())
+            return str(self.__class__.__name__) +  str('[NaF]') #::GMG::NaF = Not a Figure
+            #return '{}(NaF)'.format(self.__class__.__name__) 
 
     def num_lados(self):
-        return self._lados
+        return len(self._magnitud)
 
     def perimetro(self):
-        s = 0
-        for i in self.magnitud:
-            s+=i
-        return s
+        return sum(self._magnitud)
 
+    #::GMG::NotImplemented (left for inheritance)
+    #       Las operaciones de comparación asociadas al área se dejan también para las clases hijas
     def area(self):
         pass
 
     #::GMG::Las funciones aritméticas se pueden implementar sabiendo self.magnitud
-    #+ 	object.__add__(self, other)
-    #https://www.codecademy.com/en/forum_questions/5479afac7c82cafda30024c2
-    #https://stackoverflow.com/questions/16548584/adding-two-tuples-elementwise
+    # https://www.reddit.com/r/learnpython/comments/3cvgpi/can_someone_explain_radd_to_me_in_simple_terms_i/
     def __add__(self, other):
-        return Figura([sum(x) for x in zip(self.magnitud,other.magnitud)])
+        res = Figura([sum(x) for x in zip(self._magnitud,other._magnitud)])
+        #::GMG::Cast the object reurned to the actual class it belongs to
+        # https://stackoverflow.com/questions/3464061/cast-base-class-to-derived-class-python-or-more-pythonic-way-of-extending-class
+        res.__class__ = self.__class__
+        return res
 
     #- 	object.__sub__(self, other)
-    #https://stackoverflow.com/questions/17418108/elegant-way-to-perform-tuple-arithmetic
     def __sub__(self, other):
-        return Figura(tuple([x-y for x, y in zip(self.magnitud, other.magnitud)]))
+        res = Figura(tuple([x-y for x, y in zip(self._magnitud, other._magnitud)]))
+        res.__class__ = self.__class__
+        return res
 
     #* 	object.__mul__(self, other)
     def __mul__(self,other):
-        return Figura(tuple([x*y for x, y in zip(self.magnitud, other.magnitud)]))
+        res =  Figura(tuple([x*y for x, y in zip(self._magnitud, other._magnitud)]))
+        res.__class__ = self.__class__
+        return res
 
     #// object.__floordiv__(self, other)
     def __floordiv__(self, other):
-        return Figura(tuple([x//y for x, y in zip(self.magnitud, other.magnitud)]))
+        res = Figura(tuple([x//y for x, y in zip(self._magnitud, other._magnitud)]))
+        res.__class__ = self.__class__
+        return res
 
     #/ 	object.__truediv__(self, other)
     #::GMG::Notimplemented
-    #       Considero que no tiene sentido porque trabajo con `longitudes`, es decir,
+    #       Considero que no tiene sentido porque trabajo con `longitudes` que son
     #       números enteros positivos
 
     #** .. pow() object.__rpow__(self, other)
     def __pow__(self,other):
-        return Figura(tuple([x**y for x, y in zip(self.magnitud, other.magnitud)]))
-
+        res = Figura(tuple([x**y for x, y in zip(self._magnitud, other._magnitud)]))
+        res.__class__ = self.__class__
+        return res
 
 class Circulo(Figura):
-    pass
+
+    def __init__(self, radio=None):
+        super().__init__((radio,))
+
+    def radio(self):
+        return int(self._magnitud[0])
+
+    def perimetro(self):
+        return 2*pi*self._magnitud[0]
+
+    def area(self):
+        return pi*(self._magnitud[0]**2)
+
+    #< 		object.__lt__(self, other)
+    def __lt__(self, other):
+        return self.area() < other.area()
+
+    #<= 	object.__le__(self, other)
+#    def __le__(self, other):
+#        return self.area() <= other.area()
+
+    #== 	object.__eq__(self, other)
+#    def __eq__(self, other):
+#        return self.area() == other.area()
+
+    #!= 	object.__ne__(self, other)
+#    def __ne__(self, other):
+#        return self.area() != other.area()
+
+    #>= 	object.__ge__(self, other)
+#    def __ge__(self, other):
+#        return self.area() >= other.area()
+
+    #> 		object.__gt__(self, other)
+    def __gt__(self, other):
+        return self.area() > other.area()
 
 
-class Rectangulo(Figura):
-    pass
+#class Rectangulo(Figura):
+#    _nombre = 'Rectangulo'
+
+#    def __init__(self, lado_1=None, lado_2=None):
+#        if (lado_1 and lado_2
+#            and isinstance(lado_1, int) and isinstance(lado_2, int)
+#            and lado_1 >= 0 and lado_2 >= 0:
+#            super().__init__(tuple([lado_1,lado_2]))
+#        else:
+#            super().__init()
+
+    #https://stackoverflow.com/questions/805066/call-a-parent-classs-method-from-child-class-in-python
+#    def perimetro(self):
+#        pass
+    #    return sum(self.magnitud)
+
+#    def area(self):
+#        pass
 
 
-class Triangulo(Figura):
-    pass
+    #< 		object.__lt__(self, other)
+    #<= 	object.__le__(self, other)
+    #== 	object.__eq__(self, other)
+    #!= 	object.__ne__(self, other)
+    #>= 	object.__ge__(self, other)
+    #> 		object.__gt__(self, other)
 
 
-"""Parte de las pruebas de Figura, Circulo, Rectangulo, Triangulo.
+#class Triangulo(Figura):
+#    _nombre = 'Triangulo'
 
-"""
+#    def __init__(self, lado_1=None, lado_2=None, lado_3=None):
+#        if (lado_1 and lado_2 and lado_3
+#            and isinstance(lado_1, int) and isinstance(lado_2, int)
+#            and isinstance(lado_3, int)
+#            and lado_1 >= 0 and lado_2 >= 0 and lado_3 >= 0 and
+#            _triangulo_valido(lado_1, lado_2, lado_3):
+#            super().__init__(tuple([lado_1,lado_2,lado_3]))
+#        else:
+#            super().__init()
 
-#def test_rectangulo():
-#    a = Rectangulo(3,5)
-    #b = Rectangulo(2,7)
+#    @staticmethod
+#    def _tiangulo_valido(a, b, c):
+        # check condition
+#        if (a + b <= c) or (a + c <= b) or (b + c <= a) :
+#            return False
+#        else:
+#            return True
 
-#    area_real = 15
-#    perimetro_real = 8
-#    area = a.area()
-#    perimetro_1 = a.perimetro()
-#    perimetro_2 = Figura.primetro(a)
-#    assert area == area_real, \
-#        '::GMG::test_rectangulo()::a.area()::Error, area esperada=%s, calculada=%s ' \
-#        % (area_real,area)
+#    def perimetro(self):
+#        return sum(self.magnitud)
 
-#import unittest
-
-#class BaseTest(unittest.TestCase):
-#    def testCommon(self):
-#        print 'Calling BaseTest:testCommon'
-#        value = 5
-#        self.assertEquals(value, 5)
-
-#class SubTest1(BaseTest):
-#    def testSub1(self):
-#        print 'Calling SubTest1:testSub1'
-#        sub = 3
-#        self.assertEquals(sub, 3)
+#    def area(self):
+#        pass
 
 
-#class SubTest2(BaseTest):
-#    def testSub2(self):
-#        print 'Calling SubTest2:testSub2'
-#        sub = 4
-#        self.assertEquals(sub, 4)
+    #< 		object.__lt__(self, other)
+    #<= 	object.__le__(self, other)
+    #== 	object.__eq__(self, other)
+    #!= 	object.__ne__(self, other)
+    #>= 	object.__ge__(self, other)
+    #> 		object.__gt__(self, other)
 
-#if __name__ == '__main__':
-#    unittest.main()
+
+import unittest
+
+class BaseTest(unittest.TestCase):
+
+    a = Circulo(3)
+
+    def testCommon(self):
+        print ('::GMG::BaseTest:testCommon')
+        print('::GMG::Circulo::->',self.a)
+        perimetro = self.a.perimetro()
+        area = self.a.area()
+        print('::GMG::Circulo:área: {}, perímetro: {}'.\
+             format(area,perimetro))
+        # https://stackoverflow.com/questions/8929005/unittest-sometimes-fails-because-floating-point-imprecision#
+        self.assertAlmostEqual(perimetro, 2*pi*3,\
+            msg='::GMG::ERROR:Circulo.perimetro():')
+        self.assertAlmostEqual(area, pi*3*3,\
+            msg='::GMG::ERROR:Circulo.area():')
+
+class SubTestAritmetico(BaseTest):
+
+    b = Circulo(7)
+
+    def testSubSuma(self):
+        print ('::GMG::SubTestAritmético:testSubSuma')
+        suma = self.a + self.b
+        #::GMG::
+        #suma.__class__ =  Circulo
+        print('::GMG::Circulo:suma: {} + {}'.format(self.a, self.b))
+        self.assertEqual(suma.radio(), 10)
+
+class SubTestLogico(BaseTest):
+
+    b = Circulo(5)
+
+    def testSubMayor(self):
+        print ('::GMG::SubTestLogico:">"')
+        print('::GMG::Circulo: {} > {}'.format(self.b, self.a))
+        self.assertEqual(self.b > self.a, True)
+
+# https://stackoverflow.com/questions/419163/what-does-if-name-main-do
+if __name__ == '__main__':
+    unittest.main()
