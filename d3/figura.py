@@ -7,12 +7,14 @@ Todo:
     * Implementar Pruebas unitarias de operaciones aritméticas (+,-,*,/,**)
     * Implementar operaciones aritméticas entre números y figuras
     * Implementar Pruebas unitarias de operaciones entre números y figuras
-    * Implementar Pruebas unitarias en Notebook Python para entregable
+    * Documentar módulo, clases y métodos con Docstring
+    * Implementar Pruebas unitarias en Jupyter Notebook
 
 """
 
 
 pi = 3.14159265359
+
 
 class Figura(object):
 
@@ -47,7 +49,14 @@ class Figura(object):
     #::GMG::Operadores artirmáticos entre objetos de la misma clase
     # https://www.reddit.com/r/learnpython/comments/3cvgpi/can_someone_explain_radd_to_me_in_simple_terms_i/
     def __add__(self, other):
-        res = Figura([sum(x) for x in zip(self._magnitud,other._magnitud)])
+        if (isinstance(other, int) and other >= 0):
+            res = Figura([x + other for x in self._magnitud])
+        elif isinstance(other,self.__class__): 
+            res = Figura([sum(x) for x in zip(self._magnitud,other._magnitud)])
+        else:
+            raise ValueError(
+                '::ERROR::Sorry, {} is not a valid right operand'.format(other)
+                )
         #::GMG::Cast the object returned to the actual class it belongs to
         # https://stackoverflow.com/questions/3464061/cast-base-class-to-derived-class-python-or-more-pythonic-way-of-extending-class
         res.__class__ = self.__class__
@@ -55,19 +64,46 @@ class Figura(object):
 
     #- 	object.__sub__(self, other)
     def __sub__(self, other):
-        res = Figura(tuple([x-y for x, y in zip(self._magnitud, other._magnitud)]))
+        if (isinstance(other, int) and other >= 0):
+            res = Figura([x - other for x in self._magnitud])
+        elif isinstance(other,self.__class__):
+            res = Figura(
+                tuple([x - y for x, y in zip(self._magnitud, other._magnitud)])
+                )
+        else:
+            raise ValueError(
+                '::ERROR::Sorry, {} is not a valid right operand'.format(other)
+                )
         res.__class__ = self.__class__
         return res
 
     #* 	object.__mul__(self, other)
     def __mul__(self,other):
-        res =  Figura(tuple([x*y for x, y in zip(self._magnitud, other._magnitud)]))
+        if (isinstance(other, int) and other >= 0):
+            res = Figura([x*other for x in self._magnitud])
+        elif isinstance(other,self.__class__):
+            res = Figura(
+                tuple([x*y for x, y in zip(self._magnitud, other._magnitud)])
+                )
+        else:
+            raise ValueError(
+                '::ERROR::Sorry, {} is not a valid right operand'.format(other)
+            )
         res.__class__ = self.__class__
         return res
 
     #// object.__floordiv__(self, other)
     def __floordiv__(self, other):
-        res = Figura(tuple([x//y for x, y in zip(self._magnitud, other._magnitud)]))
+        if (isinstance(other, int) and other >= 0):
+            res = Figura([x//other for x in self._magnitud])
+        elif isinstance(other,self.__class__):
+            res = Figura(
+                tuple([x//y for x, y in zip(self._magnitud, other._magnitud)])
+                )
+        else:
+            raise ValueError(
+                '::ERROR::Sorry, {} is not a valid right operand'.format(other)
+            )
         res.__class__ = self.__class__
         return res
 
@@ -78,34 +114,79 @@ class Figura(object):
 
     #** .. pow() object.__rpow__(self, other)
     def __pow__(self,other):
-        res = Figura(tuple([x**y for x, y in zip(self._magnitud, other._magnitud)]))
+        if (isinstance(other, int) and other >= 0):
+            res = Figura([x**other for x in self._magnitud])
+        elif isinstance(other,self.__class__):
+            res = Figura(
+                tuple([x**y for x, y in zip(self._magnitud, other._magnitud)])
+            )
+        else:
+            raise ValueError(
+                '::ERROR::Sorry, {} is not a valid right operand'.format(other)
+            )
         res.__class__ = self.__class__
         return res
 
     #::GMG::Operadores lógicos 
     #< 		object.__lt__(self, other)
     def __lt__(self, other):
-        return self.area() < other.area()
+        if isinstance(other,self.__class__):
+            return self.area() < other.area()
+        else:
+            raise ValueError(
+                '::ERROR::Sorry, operands {} and {} not the same class'
+                .format(self,other)
+            )
 
     #<= 	object.__le__(self, other)
     def __le__(self, other):
-        return self.area() <= other.area()
+        if isinstance(other,self.__class__):
+            return self.area() <= other.area()
+        else:
+            raise ValueError(
+                '::ERROR::Sorry, operands {} and {} not the same class'
+                .format(self,other)
+            )
 
     #== 	object.__eq__(self, other)
     def __eq__(self, other):
-        return self.area() == other.area()
+        if isinstance(other,self.__class__):
+            return self.area() == other.area()
+        else:
+            raise ValueError(
+                '::ERROR::Sorry, operands {} and {} not the same class'
+                .format(self,other)
+            )
 
     #!= 	object.__ne__(self, other)
     def __ne__(self, other):
-        return self.area() != other.area()
+        if isinstance(other,self.__class__):
+            return self.area() != other.area()
+        else:
+            raise ValueError(
+                '::ERROR::Sorry, operands {} and {} not the same class'
+                .format(self,other)
+            )
 
     #>= 	object.__ge__(self, other)
     def __ge__(self, other):
-        return self.area() >= other.area()
+        if isinstance(other,self.__class__):
+            return self.area() >= other.area()
+        else:
+            raise ValueError(
+                '::ERROR::Sorry, operands {} and {} not the same class'
+                .format(self,other)
+            )
 
     #> 		object.__gt__(self, other)
     def __gt__(self, other):
-        return self.area() > other.area()
+        if isinstance(other,self.__class__):
+            return self.area() > other.area()
+        else:
+            raise ValueError(
+                '::ERROR::Sorry, operands {} and {} not the same class'
+                .format(self,other)
+            )
 
 
 class Circulo(Figura):
@@ -188,6 +269,7 @@ class Triangulo(Figura):
         return sqrt(s*(s - self._magnitud[0])*\
                       (s - self._magnitud[1])*\
                       (s - self._magnitud[2]))
+
 
 import unittest
 
