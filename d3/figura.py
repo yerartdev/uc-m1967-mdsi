@@ -2,13 +2,11 @@
 """Módulo para entregable UC M1967 OOPFormasGeometricas.
 
 Todo:
-    * Implementar Pruebas unitarias de clases: Circulo, Rectangulo, Triangulo
-    * Implementar Pruebas unitarias de operaciones lógicas (>,<,>=,<=,==,!=)
-    * Implementar Pruebas unitarias de operaciones aritméticas (+,-,*,/,**)
-    * Implementar operaciones aritméticas entre números y figuras
+    * Implementar Pruebas unitarias de operaciones lógicas (>=,<=,==,!=)
+    * Implementar Pruebas unitarias de operaciones aritméticas (*,//,**)
     * Implementar Pruebas unitarias de operaciones entre números y figuras
+    * Implementar pruebas unitarias de casos extremos ('corner test cases'): Circulo, Rectangulo, Triangulo
     * Documentar módulo, clases y métodos con Docstring
-    * Implementar Pruebas unitarias en Jupyter Notebook
 
 """
 
@@ -46,7 +44,8 @@ class Figura(object):
     def area(self):
         pass
 
-    #::GMG::Operadores artirmáticos entre objetos de la misma clase
+    #::GMG::Operadores artirméticos entre objetos de la misma clase
+    #       o entre un número entero positivo y un objeto
     # https://www.reddit.com/r/learnpython/comments/3cvgpi/can_someone_explain_radd_to_me_in_simple_terms_i/
     def __add__(self, other):
         if (isinstance(other, int) and other >= 0):
@@ -61,6 +60,10 @@ class Figura(object):
         # https://stackoverflow.com/questions/3464061/cast-base-class-to-derived-class-python-or-more-pythonic-way-of-extending-class
         res.__class__ = self.__class__
         return res
+
+    # https://stackoverflow.com/questions/36785417/how-to-properly-overload-the-add-method
+    def __radd__(self, other):
+        return self.__add__(other)
 
     #- 	object.__sub__(self, other)
     def __sub__(self, other):
@@ -77,6 +80,9 @@ class Figura(object):
         res.__class__ = self.__class__
         return res
 
+    def __rsub__(self, other):
+        return self.__sub__(other)
+
     #* 	object.__mul__(self, other)
     def __mul__(self,other):
         if (isinstance(other, int) and other >= 0):
@@ -92,6 +98,9 @@ class Figura(object):
         res.__class__ = self.__class__
         return res
 
+    def __rmul__(self, other):
+        return self.__mul__(other)
+
     #// object.__floordiv__(self, other)
     def __floordiv__(self, other):
         if (isinstance(other, int) and other >= 0):
@@ -106,6 +115,12 @@ class Figura(object):
             )
         res.__class__ = self.__class__
         return res
+
+    def __rfloordiv__(self, other):
+        #return self.__floordiv__(other)
+        raise RuntimeError("::ERROR:: Divide a {} by a {} doesn't make sense."
+                .format(type(other),type(self))
+            )
 
     #/ 	object.__truediv__(self, other)
     #::GMG::Notimplemented
@@ -126,6 +141,11 @@ class Figura(object):
             )
         res.__class__ = self.__class__
         return res
+
+    def __rpow__(self, other):
+        raise RuntimeError("::ERROR:: A {} raised to a {} doesn't make sense."
+                .format(type(other),type(self))
+            )
 
     #::GMG::Operadores lógicos 
     #< 		object.__lt__(self, other)
@@ -280,7 +300,7 @@ class BaseTest(unittest.TestCase):
     c = Rectangulo(3,7)
     d = Rectangulo(1,3)
     e = Triangulo(3,4,5)
-    f = Triangulo(1,2,3)
+    f = Triangulo(2,2,3)
 
     def testCommon(self):
         print('::GMG::BaseTest:testCommon')
@@ -327,7 +347,7 @@ class SubTestAritmetico(BaseTest):
         self.assertEqual(suma_r.anchura(),10)
         print('::Triangulo:suma: {} + {} = {}'
             .format(self.e, self.f, suma_t))
-        self.assertEqual(suma_t._magnitud, (4,6,8))
+        self.assertEqual(suma_t._magnitud, (5,6,8))
 
     def testSubResta(self):
         print('::GMG::SubTestAritmético::__sub__::-')
@@ -343,8 +363,7 @@ class SubTestAritmetico(BaseTest):
         self.assertEqual(resta_r.anchura(),4)
         print('::Triangulo:resta: {} - {} = {}'
             .format(self.e, self.f, resta_t))
-        self.assertEqual(resta_t._magnitud, (2,2,2))
-        self.assertEqual(resta_r.anchura(),4)
+        self.assertEqual(resta_t._magnitud, (1,2,2))
 
 
 class SubTestLogico(BaseTest):
@@ -355,10 +374,16 @@ class SubTestLogico(BaseTest):
         print('::Circulo:área 1: {}, área 2: {}'.\
              format(self.b.area(),self.a.area()))
         self.assertEqual(self.b > self.a, True)
+
         print('::Rectangulo: {} > {}'.format(self.c, self.d))
         print('::Rectangulo:área 1: {}, área 2: {}'.\
              format(self.c.area(),self.d.area()))
         self.assertEqual(self.c > self.d, True)
+
+        print('::Triangulo: {} > {}'.format(self.e, self.f))
+        print('::Triangulo:área 1: {}, área 2: {}'.\
+             format(self.e.area(),self.f.area()))
+        self.assertEqual(self.e > self.f, True)
 
     def testSubMenor(self):
         print('::GMG::SubTestLogico:"<"')
@@ -366,10 +391,17 @@ class SubTestLogico(BaseTest):
         print('::Circulo:área 1: {}, área 2: {}'.\
              format(self.a.area(),self.b.area()))
         self.assertEqual(self.a < self.b, True)
+
         print('::Rectangulo: {} < {}'.format(self.d, self.c))
         print('::Rectangulo:área 1: {}, área 2: {}'.\
              format(self.d.area(),self.c.area()))
         self.assertEqual(self.d < self.c, True)
+
+        print('::Triangulo: {} < {}'.format(self.f, self.e))
+        print('::Triangulo:área 1: {}, área 2: {}'.\
+             format(self.f.area(),self.e.area()))
+        self.assertEqual(self.f < self.e, True)
+
 
 # https://stackoverflow.com/questions/419163/what-does-if-name-main-do
 if __name__ == '__main__':
