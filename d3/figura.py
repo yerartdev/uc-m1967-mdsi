@@ -241,7 +241,7 @@ class Triangulo(Figura):
 #            super().__init()
 
     def __init__(self, lado_1=None, lado_2=None, lado_3=None):
-        if _triangulo_valido(lado_1, lado_2, lado_3):
+        if self._triangulo_valido(lado_1, lado_2, lado_3):
             super().__init__(tuple([lado_1,lado_2,lado_3]))
         else:
             super().__init()
@@ -249,14 +249,14 @@ class Triangulo(Figura):
     # https://en.wikipedia.org/wiki/Triangle_inequality
     # https://en.wikipedia.org/wiki/Triangle#Existence_of_a_triangle
 #    @staticmethod
-#    def _tiangulo_valido(a, b, c):
+#    def _triangulo_valido(a, b, c):
 #        if (a + b <= c) or (a + c <= b) or (b + c <= a) :
 #            return False
 #        else:
 #            return True
 
     @staticmethod
-    def _tiangulo_valido(a, b, c):
+    def _triangulo_valido(a, b, c):
         if a >= 0 and b >= 0  and c >= 0 and max(a,b,c) <= (a + b + c)/2:
             return True
         else:
@@ -279,9 +279,12 @@ class BaseTest(unittest.TestCase):
     b = Circulo(7)
     c = Rectangulo(3,7)
     d = Rectangulo(1,3)
+    e = Triangulo(3,4,5)
+    f = Triangulo(1,2,3)
 
     def testCommon(self):
         print('::GMG::BaseTest:testCommon')
+
         print('::Circulo::->',self.a)
         print('::Circulo:área: {}, perímetro: {}'.\
              format(self.a.area(),self.a.perimetro()))
@@ -291,12 +294,22 @@ class BaseTest(unittest.TestCase):
         self.assertAlmostEqual(self.a.area(), pi*3*3,\
             msg='::ERROR:Circulo.area():')
 
+        print('::Rectangulo::->',self.c)
         print('::Rectangulo:área: {}, perímetro: {}'.\
              format(self.c.area(),self.c.perimetro()))
         self.assertEqual(self.c.perimetro(), 10,\
-            msg='::ERROR:Circulo.perimetro():')
+            msg='::ERROR:Rectangulo.perimetro():')
         self.assertEqual(self.c.area(), 21,\
-            msg='::ERROR:Circulo.area():')
+            msg='::ERROR:Rectangulo.area():')
+
+        print('::Triangulo::->',self.e)
+        print('::Triangulo:área: {}, perímetro: {}'.\
+             format(self.e.area(),self.e.perimetro()))
+        self.assertEqual(self.e.perimetro(), 12,\
+            msg='::ERROR:Triangulo.perimetro():')
+        self.assertEqual(self.e.area(), 6.0,\
+            msg='::ERROR:Triangulo.area():')
+
 
 class SubTestAritmetico(BaseTest):
 
@@ -304,21 +317,35 @@ class SubTestAritmetico(BaseTest):
         print ('::GMG::SubTestAritmético::__add__::+')
         suma_c = self.a + self.b
         suma_r = self.c + self.d
-        print('::Circulo:suma: {} + {}'.format(self.a, self.b))
+        suma_t = self.e + self.f
+        print('::Circulo:suma: {} + {} = {}'
+            .format(self.a, self.b, suma_c))
         self.assertEqual(suma_c.radio(), 10)
-        print('::Rectangulo:suma: {} + {}'.format(self.c, self.d))
+        print('::Rectangulo:suma: {} + {} = {}'
+            .format(self.c, self.d, suma_r))
         self.assertEqual(suma_r.longitud(), 4)
         self.assertEqual(suma_r.anchura(),10)
+        print('::Triangulo:suma: {} + {} = {}'
+            .format(self.e, self.f, suma_t))
+        self.assertEqual(suma_t._magnitud, (4,6,8))
 
     def testSubResta(self):
         print('::GMG::SubTestAritmético::__sub__::-')
         resta_c = self.b - self.a
         resta_r = self.c - self.d
-        print('::Circulo:resta: {} - {}'.format(self.b, self.a))
+        resta_t = self.e - self.f
+        print('::Circulo:resta: {} - {} = {}'
+            .format(self.b, self.a, resta_c))
         self.assertEqual(resta_c.radio(), 4)
-        print('::Rectangulo:resta: {} - {}'.format(self.c, self.d))
+        print('::Rectangulo:resta: {} - {} = {}'
+            .format(self.c, self.d, resta_r))
         self.assertEqual(resta_r.longitud(), 2)
         self.assertEqual(resta_r.anchura(),4)
+        print('::Triangulo:resta: {} - {} = {}'
+            .format(self.e, self.f, resta_t))
+        self.assertEqual(resta_t._magnitud, (2,2,2))
+        self.assertEqual(resta_r.anchura(),4)
+
 
 class SubTestLogico(BaseTest):
 
