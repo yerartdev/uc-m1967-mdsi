@@ -7,9 +7,47 @@
 
 -- 1. Mostrar los datos de los pedidos realizados entre octubre y noviembre de 2018 (0.5 ptos)
 
+select * from pedidos p
+  where (p.fechaHoraPedido >= '2018-10-01' and p.fechaHoraPedido <='2018-11-30')
+  order by p.fechaHoraPedido;
+
 -- 2. Devolver el id, nombre, apellido1, apellido2, fecha de alta y fecha de baja de todos los miembros del personal que no estén de baja, ordenados descendentemente por fecha de alta y ascendentemente por nombre (0.75 pto, 0.25 ptos adicionales si la consulta se realiza con el nombre y apellidos concatenados).
 
+select p.idpersonal,
+       p.nombre, p.apellido1, p.apellido2,
+       p.fechaAlta, p. fechaBaja from personal p
+where p.fechaBaja is null
+order by p.fechaAlta desc;
+
+select p.idpersonal, p.nombre,
+       p.apellido1, p.apellido2,
+       p.fechaAlta, p. fechaBaja from personal p
+where p.fechaBaja is null
+order by p.nombre;
+
+--::GMG::No se prodece variación del resultado si se hace por las dos columnas ya que no hay ningún desempate que hacer por fecha de alta 
+
+select p.idpersonal,
+       p.nombre, p.apellido1, p.apellido2,
+       p.fechaAlta, p. fechaBaja from personal p
+where p.fechaBaja is null
+order by p.fechaAlta desc, p.nombre;
+
+--::GMG::Concatenando las partes del nombre
+
+select p.idpersonal,
+      (p.nombre || ' '  || p.apellido1 || ' ' ||p.apellido2) as nombre,
+      p.fechaAlta, p. fechaBaja from personal p
+where p.fechaBaja is null
+order by p.fechaAlta desc, p.nombre;
+
 -- 3. Retornar los datos de todos los clientes cuyo nombre de calle comience por G o J y que además tengan observaciones (1 pto).
+
+--::GMG::Borrador
+--       http://www.sqlitetutorial.net/sqlite-like/
+
+select (c.nombre || ' '  || c.apellido1 || ' ' ||c.apellido2) as nombre, c.calle from clientes c 
+where (c.calle like 'Calle G%' or c.calle like 'Calle J%');
 
 -- 4. Devolver el id e importe de las pizzas junto con el id y descripción de todos sus ingredientes, siempre que el importe de estas pizzas sea mayor de 3 (1 pto).
 
