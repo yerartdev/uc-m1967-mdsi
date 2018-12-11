@@ -43,13 +43,29 @@ order by p.fechaAlta desc, p.nombre;
 
 -- 3. Retornar los datos de todos los clientes cuyo nombre de calle comience por G o J y que además tengan observaciones (1 pto).
 
---::GMG::Borrador
---       http://www.sqlitetutorial.net/sqlite-like/
+--::GMG:: http://www.sqlitetutorial.net/sqlite-like/
 
-select (c.nombre || ' '  || c.apellido1 || ' ' ||c.apellido2) as nombre, c.calle from clientes c 
-where (c.calle like 'Calle G%' or c.calle like 'Calle J%');
+select (c.nombre || ' '  || c.apellido1 || ' ' ||c.apellido2) as nombre, 
+        c.calle, c.observaciones from clientes c 
+where (c.calle like 'Calle G%' or c.calle like 'Calle J%') and
+      (c.observaciones is not null);
 
 -- 4. Devolver el id e importe de las pizzas junto con el id y descripción de todos sus ingredientes, siempre que el importe de estas pizzas sea mayor de 3 (1 pto).
+
+-- ::GMG:: Borradores
+
+-- Para seleccionar los ingredientes y su descripción
+
+select distinct ip.idingrediente, i.descripcion 
+  from ingredientedepizza ip join ingredientes i 
+    on ip.idingrediente = i.idingrediente;
+
+-- Para seleccionar importe e ingredientes (id)
+
+select i.idpizza, i.idingrediente, p.importeBase 
+  from ingredientedepizza i join pizzas p on i.idpizza = p.idpizza 
+where (p.importeBase > 3) 
+order by i.idpizza;
 
 -- 5. Mostrar los datos de todas las pizzas que no hayan sido nunca pedidas, ordenados por id ascendentemente (1 pto).
 
