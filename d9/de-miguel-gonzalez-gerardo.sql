@@ -58,16 +58,35 @@ where (c.calle like 'Calle G%' or c.calle like 'Calle J%') and
 
 select distinct ip.idingrediente, i.descripcion 
   from ingredientedepizza ip join ingredientes i 
-    on ip.idingrediente = i.idingrediente;
+  on ip.idingrediente = i.idingrediente;
 
 -- Para seleccionar importe e ingredientes (id)
 
 select i.idpizza, i.idingrediente, p.importeBase 
-  from ingredientedepizza i join pizzas p on i.idpizza = p.idpizza 
+  from ingredientedepizza i join pizzas p 
+  on i.idpizza = p.idpizza 
 where (p.importeBase > 3) 
 order by i.idpizza;
 
 -- 5. Mostrar los datos de todas las pizzas que no hayan sido nunca pedidas, ordenados por id ascendentemente (1 pto).
+
+--::GMG:: Borradores
+
+-- Intervienen las tablas de LineasPedidos, Pizzas
+
+-- Intervienen Pizzas, Bases, IngredienteDePizzas, Ingredientes
+
+-- Datos de todas la Pizzas con sus bases e ingredientes
+
+select p.idpizza as pizza, 
+       b.descripcion as base, 
+       i.descripcion as ingrediente, 
+       p.importeBase as importe 
+from (Pizzas p join Bases b on p.idbase = b.idbase) join 
+     (IngredienteDepizza ip join Ingredientes i 
+      on ip.idingrediente = i.idingrediente) 
+on p.idpizza = ip.idpizza;
+
 
 -- 6. Devolver los datos de las bases, junto con los datos de las pizzas en las que están presentes, incluyendo los datos de las bases que no están en ninguna pizza (0.5 ptos)
 
