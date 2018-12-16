@@ -25,7 +25,7 @@ select p.idpersonal, p.nombre,
 where p.fechaBaja is null
 order by p.nombre;
 
---::GMG::No se prodece variación del resultado si se hace por las dos columnas ya que no hay ningún desempate que hacer por fecha de alta 
+--::GMG::No se produce variación del resultado si se hace por las dos columnas ya que no hay ningún desempate que hacer por fecha de alta 
 
 select p.idpersonal,
        p.nombre, p.apellido1, p.apellido2,
@@ -68,11 +68,20 @@ select i.idpizza, i.idingrediente, p.importeBase
 where (p.importeBase > 3) 
 order by i.idpizza;
 
+-- ::GMG:: Consulta final
+
+select p.idpizza as pizza, 
+       i.idingrediente, i.descripcion as ingrediente, 
+       p.importeBase as importe from Pizzas p  
+join  (
+       IngredienteDepizza ip join Ingredientes i 
+       on ip.idingrediente = i.idingrediente
+      ) on p.idpizza = ip.idpizza 
+where p.importeBase > 3;
+
 -- 5. Mostrar los datos de todas las pizzas que no hayan sido nunca pedidas, ordenados por id ascendentemente (1 pto).
 
 --::GMG:: Borradores
-
--- Intervienen las tablas de LineasPedidos, Pizzas
 
 -- Intervienen Pizzas, Bases, IngredienteDePizzas, Ingredientes
 
@@ -87,12 +96,86 @@ from (Pizzas p join Bases b on p.idbase = b.idbase) join
       on ip.idingrediente = i.idingrediente) 
 on p.idpizza = ip.idpizza;
 
+-- Pizzas que se han pedido de LineasPedidos
+
+select distinct lp.idpizza from lineaspedidos lp;
+
+--::GMG:: Consulta final
+
+select p.idpizza as pizza,
+       b.descripcion as base,
+       i.descripcion as ingrediente,
+       p.importeBase as importe
+from (Pizzas p join Bases b on p.idbase = b.idbase) join
+     (IngredienteDepizza ip join Ingredientes i
+      on ip.idingrediente = i.idingrediente)
+on p.idpizza = ip.idpizza
+where p.idpizza not in (
+    select distinct lp.idpizza from lineaspedidos lp)
+order by p.idpizza asc;
 
 -- 6. Devolver los datos de las bases, junto con los datos de las pizzas en las que están presentes, incluyendo los datos de las bases que no están en ninguna pizza (0.5 ptos)
 
+select b.idbase, b.descripcion as base, 
+       p.idpizza as pizza, p.importeBase as importe 
+from Bases b left join Pizzas p 
+on b.idbase = p.idbase;
+
 -- 7. Retornar los datos de los pedidos realizados por el cliente con id 1, junto con los datos de sus líneas y de las pizzas pedidas, siempre que el precio unitario en la línea sea menor que el importe base de la pizza. (1.5 ptos)
 
+--::GMG:: Borradores
+
+-- Datos de los pedidos realizados por el cliente 1 (LineasPedidos, Pedidos)
+
+select lp.idpedido, lp.idpizza, lp.cantidad, lp.precioUnidad, lp.descuento
+from LineasPedidos lp join Pedidos p on lp.idpedido = p.idpedido
+where p.idcliente = 1;
+
+-- Bases, Pizzas e importe base
+
+select b.idbase, b.descripcion as base, 
+       p.idpizza as pizza, p.importeBase as importe 
+from Bases b join Pizzas p on b.idbase = p.idbase;
+
+--::GMG::Consulta final
+
+select lp.idpedido as pedido, lp.cantidad, lp.precioUnidad, lp.descuento, 
+       p.idpizza as pizza, p.idbase as base, p.importeBase as importe 
+from (LineasPedidos lp join Pedidos p on lp.idpedido = p.idpedido) 
+     join Pizzas p on lp.idpizza = p.idpizza 
+where p.idcliente = 1 and lp.precioUnidad < p.importeBase;
+
 -- 8. Mostrar el id y nif de todos los usuarios, junto con el número total de pedidos realizados (0.75 pto, 0.25 ptos adicionales si sólo se devuelven los datos de los que hayan realizado más de un pedido).
+
+--::GMG:: Borradores
+
+-- id y nif de todos los clientes
+
+select c.idcliente, c.nif from clientes c;
+
+-- con sus líneas de pedidos
+
+select c.idcliente, c.nif, 
+       p.idpedido, lp.idlinea 
+from (clientes c join pedidos p on c.idcliente = p.idcliente) 
+     join lineaspedidos lp 
+     on lp.idpedido = p.idpedido;
+
+-- con el número de (líneas de) pedidos por cliente
+
+select c.idcliente, c.nif, count(lp.idlinea) as pedidos 
+from (clientes c join pedidos p on c.idcliente = p.idcliente) 
+     join lineaspedidos lp 
+     on lp.idpedido = p.idpedido 
+group by c.idcliente, c.nif;
+
+-- ::GMG::Consulta final
+
+select c.idcliente, c.nif, count(lp.idlinea) as pedidos 
+from (clientes c join pedidos p on c.idcliente = p.idcliente) 
+     join lineaspedidos lp on lp.idpedido = p.idpedido 
+group by c.idcliente, c.nif 
+having pedidos > 1;
 
 -- 9. Sumar 0.5 al importe base de todas las pizzas que contengan el ingrediente con id 1 (0.75 pto).
 
