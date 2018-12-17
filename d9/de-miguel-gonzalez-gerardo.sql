@@ -177,7 +177,15 @@ from (clientes c join pedidos p on c.idcliente = p.idcliente)
 group by c.idcliente, c.nif 
 having pedidos > 1;
 
--- 9. Sumar 0.5 al importe base de todas las pizzas que contengan el ingrediente con id 1 (0.75 pto).
+-- 9. Sumar 0.5 al importe base de todas las pizzas que contengan el ingrediente con id 'JAM' (0.75 pto).
+
+update Pizzas set importeBase = importeBase + 0.5 
+where idpizza in (
+   select p.idpizza 
+     from pizzas p join ingredientedepizza ip 
+     on p.idpizza = ip.idpizza 
+   where ip.idingrediente = 'JAM'
+);
 
 -- 10. Eliminar las líneas de los pedidos anteriores a 2018 (0.75 pto).
 
