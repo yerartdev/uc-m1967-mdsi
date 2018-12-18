@@ -189,4 +189,19 @@ where idpizza in (
 
 -- 10. Eliminar las líneas de los pedidos anteriores a 2018 (0.75 pto).
 
+--::GMG::Aquí la selección es importante
+
+-- Pedidos anteriores a 2018
+
+select idpedido,fechaHoraPedido 
+from pedidos 
+where fechaHoraPedido < date('2018-01-01');
+
+--::GMG::Consulta final
+
+delete from Pedidos
+where fechahoraPedido < date('2018-01-01');
+
 -- 11. BONUS para el 10: Realizar una consulta que devuelva el número de pizzas totales pedidas por cada cliente. En la consulta deberán aparecer el id y nif de los clientes, además de su nombre y apellidos concatenados (1 pto).
+
+
